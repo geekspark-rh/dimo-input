@@ -9,7 +9,6 @@ from SimpleWebSocketServer import WebSocket, SimpleWebSocketServer, SimpleSSLWeb
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
 
 class InputServer(WebSocket):
-
     def handleMessage(self):
         if self.data is None:
             self.data = ''
@@ -18,23 +17,24 @@ class InputServer(WebSocket):
         except Exception as n:
             print n
 
+    def start_finder(self):
+        Finder().init(self, False)
+
     def handleConnected(self):
         print self.address, 'connected'
+        thread.start_new_thread(self.start_finder, ())
 
     def handleClose(self):
         print self.address, 'closed'
 
-def start_finder():
-    Finder().init()
 
 if __name__ == "__main__":
     def close_sig_handler(signal, frame):
         server.close()
         sys.exit()
 
-    thread.start_new_thread(start_finder, ())
     signal.signal(signal.SIGINT, close_sig_handler)
-    server = SimpleWebSocketServer('localhost', 8000, InputServer)
+    server = SimpleWebSocketServer('localhost', 1337, InputServer)
     server.serveforever()
 
 
