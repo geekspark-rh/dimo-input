@@ -37,12 +37,19 @@ class Finder:
 
         if dev_mode:
             while(True):
-                print "foobar"
                 server.sendMessage(json.dumps({
+                    'count': 0,
                     'red'  : {'x': 100, 'y': 100},
                     'green': {'x': 100, 'y': 100},
                     'blue' : {'x': 100, 'y': 100}
                 }))
+
+        tracker = {
+            'count'  : 0,
+            'red'  : {'x': 100, 'y': 100},
+            'green': {'x': 100, 'y': 100},
+            'blue' : {'x': 100, 'y': 100}
+        }
 
         while(True):
 
@@ -60,8 +67,6 @@ class Finder:
             # convert to hsv for matching
             hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-            ret = {}
-
             # loop over each color
             for k, color in colors.iteritems():
                 # get a mask back of the "inRange" colors
@@ -76,15 +81,16 @@ class Finder:
                     x = int(moments['m10'] / area)
                     y = int(moments['m01'] / area)
 
-                    ret[k] = {}
-                    ret[k]['x'] = x
-                    ret[k]['y'] = y
+                    tracker[k] = {}
+                    tracker[k]['x'] = x
+                    tracker[k]['y'] = y
 
                     cv2.circle(frame, (x, y), 10, color['color'], -1)
                     res = cv2.bitwise_and(frame, frame, mask = mask)
                     #cv2.imshow(k, res)
 
-            server.sendMessage(json.dumps(ret))
+            tracker['count'] = tracker['count'] + 1
+            server.sendMessage(json.dumps(tracker))
             # frame = cv2.resize(frame, (frame.shape[1] * 2, frame.shape[0] * 2))
             cv2.imshow('frame', frame)
 

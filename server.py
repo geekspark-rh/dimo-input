@@ -34,7 +34,7 @@ if __name__ == "__main__":
         sys.exit()
 
     signal.signal(signal.SIGINT, close_sig_handler)
-    server = SimpleWebSocketServer('localhost', 1337, InputServer)
+    server = SimpleWebSocketServer('0.0.0.0', 1337, InputServer)
     server.serveforever()
 
 
