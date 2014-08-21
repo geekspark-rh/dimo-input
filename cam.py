@@ -29,31 +29,27 @@ colors = {
 
 class Finder:
 
-    def init(self, server, dev_mode):
-
-        print("INIT")
-
-        fps = 60 # frames per second
-        duration = 1000.0 / 60 # duration of each frame in ms
-
-        cap = cv2.VideoCapture(0)
-
-        if dev_mode:
-            while(True):
-                server.sendMessage(json.dumps({
-                    'count': 0,
-                    'red'  : {'x': 100, 'y': 100},
-                    'green': {'x': 100, 'y': 100},
-                    'blue' : {'x': 100, 'y': 100}
-                }))
-
-        tracker = {
-            'count'  : 0,
+    def get_default_tracker(self):
+        return {
+            'count': 0,
             'red'  : {'x': 100, 'y': 100},
             'green': {'x': 100, 'y': 100},
             'blue' : {'x': 100, 'y': 100}
         }
 
+    def init(self, server, opts):
+
+        fps = 60 # frames per second
+        duration = 1000.0 / 60 # duration of each frame in ms
+
+        cap = cv2.VideoCapture(opts['camera'])
+
+        if opts['debug']:
+            while(True):
+                server.sendMessage(json.dumps(self.get_default_tracker()))
+
+
+        tracker = self.get_default_tracker()
         while(True):
 
             # Capture frame-by-frame
