@@ -1,9 +1,9 @@
-import signal, sys, ssl, logging, time
+import signal, sys, ssl, logging, time, os
 from cam import Finder
 
 import thread
 
-sys.path.append('./vendor')
+sys.path.append(os.path.abspath(os.path.curdir + '/vendor/SimpleWebSocketServer'))
 from SimpleWebSocketServer import WebSocket, SimpleWebSocketServer, SimpleSSLWebSocketServer
 
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
@@ -15,17 +15,17 @@ class InputServer(WebSocket):
         try:
             self.sendMessage(str(self.data))
         except Exception as n:
-            print n
+            print(n)
 
     def start_finder(self):
         Finder().init(self, False)
 
     def handleConnected(self):
-        print self.address, 'connected'
+        print(self.address, 'connected')
         thread.start_new_thread(self.start_finder, ())
 
     def handleClose(self):
-        print self.address, 'closed'
+        print(self.address, 'closed')
 
 
 if __name__ == "__main__":

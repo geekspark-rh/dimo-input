@@ -27,11 +27,14 @@ colors = {
     }
 }
 
-
 class Finder:
+
     def init(self, server, dev_mode):
 
-        print "INIT"
+        print("INIT")
+
+        fps = 60 # frames per second
+        duration = 1000.0 / 60 # duration of each frame in ms
 
         cap = cv2.VideoCapture(0)
 
@@ -98,6 +101,7 @@ class Finder:
                 break
 
             end = time.time()
+            time.sleep((duration - (end - start))/1000.0)
             # print("Frame took %0.3f" % ((end - start) * 1000))
 
 
