@@ -39,7 +39,7 @@ class Finder:
 
     def init(self, server, opts):
 
-        fps = 60 # frames per second
+        fps = 30 # frames per second
         duration = 1000.0 / 60 # duration of each frame in ms
 
         cap = cv2.VideoCapture(opts['camera'])
@@ -62,6 +62,7 @@ class Finder:
 
             # blur image
             frame = cv2.blur(orig, (5,5))
+            #frame = orig
 
             # convert to hsv for matching
             hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -86,7 +87,7 @@ class Finder:
 
                     cv2.circle(frame, (x, y), 10, color['color'], -1)
                     res = cv2.bitwise_and(frame, frame, mask = mask)
-                    #cv2.imshow(k, res)
+                    cv2.imshow(k, res)
 
             tracker['count'] = tracker['count'] + 1
             server.sendMessage(json.dumps(tracker))
