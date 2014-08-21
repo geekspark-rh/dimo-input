@@ -29,8 +29,10 @@ colors = {
 
 class Finder:
 
-    def get_default_tracker(self):
+    def get_default_tracker(self, h, w):
         return {
+            'h'    : h,
+            'w'    : w,
             'count': 0,
             'red'  : {'x': 100, 'y': 100},
             'green': {'x': 100, 'y': 100},
@@ -42,14 +44,17 @@ class Finder:
         fps = 30 # frames per second
         duration = 1000.0 / 60 # duration of each frame in ms
 
-        cap = cv2.VideoCapture(opts['camera'])
-
         if opts['debug']:
             while(True):
-                server.sendMessage(json.dumps(self.get_default_tracker()))
+                server.sendMessage(json.dumps(self.get_default_tracker(800, 600)))
 
 
-        tracker = self.get_default_tracker()
+        cap = cv2.VideoCapture(opts['camera'])
+        h = int(cap.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH))
+        w = int(cap.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT))
+
+        tracker = self.get_default_tracker(h, w)
+
         while(True):
 
             # Capture frame-by-frame
