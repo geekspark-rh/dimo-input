@@ -62,7 +62,7 @@ class Listener:
         maxy = max(y)
         peak = np.where(y == maxy)[0][0]
         diff = np.abs(current_time - self.previous_peak)
-        if (peak > 5 and diff > 0.1):
+        if (peak > 5 and diff > 0.25):
           if (diff < 10):
             self.bpm = (1 / diff) * 60
             print self.bpm
