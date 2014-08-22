@@ -41,8 +41,8 @@ class Finder:
 
     def init(self, server, opts):
 
-        fps = 30 # frames per second
-        duration = 1000.0 / 60 # duration of each frame in ms
+        fps = 15 # frames per second
+        duration = 1000.0 / fps # duration of each frame in ms
 
         if opts['debug']:
             while(True):
@@ -50,8 +50,8 @@ class Finder:
 
 
         cap = cv2.VideoCapture(opts['camera'])
-        h = int(cap.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH))
-        w = int(cap.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT))
+        h = int(cap.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT))
+        w = int(cap.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH))
 
         tracker = self.get_default_tracker(h, w)
 
