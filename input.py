@@ -29,19 +29,29 @@ colors = {
 
 class Finder:
 
+    def get_brain_input_dict(self):
+        return  {
+            'theta' : 50,
+            'alpha' : 25
+        },
+
     def get_default_tracker(self, h, w):
         return {
             'h'    : h,
             'w'    : w,
             'count': 0,
-            'red'  : {'x': 100, 'y': 100},
-            'green': {'x': 100, 'y': 100},
-            'blue' : {'x': 100, 'y': 100}
+            'brain': {
+                'theta' : 50,
+                'alpha' : 25
+            },
+            'red'  : {'x': 0, 'y': 0},
+            'green': {'x': 0, 'y': 0},
+            'blue' : {'x': 0, 'y': 100}
         }
 
     def init(self, server, opts):
 
-        fps = 15 # frames per second
+        fps = 30 # frames per second
         duration = 1000.0 / fps # duration of each frame in ms
 
         if opts['debug']:
@@ -95,7 +105,12 @@ class Finder:
                     cv2.imshow(k, res)
 
             tracker['count'] = tracker['count'] + 1
-            server.sendMessage(json.dumps(tracker))
+
+            try:
+                tracker['brain'] = self.get_brain_input_dict()
+            finally:
+                server.sendMessage(json.dumps(tracker))
+
             # frame = cv2.resize(frame, (frame.shape[1] * 2, frame.shape[0] * 2))
             cv2.imshow('frame', frame)
 

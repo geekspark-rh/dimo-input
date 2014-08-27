@@ -1,5 +1,5 @@
 import signal, sys, ssl, logging, time, os
-from cam import Finder
+from input import Finder
 
 import thread
 import getopt
